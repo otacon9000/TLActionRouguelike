@@ -28,7 +28,7 @@ protected:
 	UPROPERTY(VisibleAnywhere)
 	UStaticMeshComponent* BaseMesh;
 	
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
+	UPROPERTY(VisibleAnywhere)
 	UStaticMeshComponent* LidMesh;
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
