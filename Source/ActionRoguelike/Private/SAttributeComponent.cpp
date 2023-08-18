@@ -11,6 +11,8 @@ USAttributeComponent::USAttributeComponent()
 	PrimaryComponentTick.bCanEverTick = true;
 
 	// ...
+
+	Health = 100.0f;
 }
 
 bool USAttributeComponent::ApplyHealthChange(float Delta)
