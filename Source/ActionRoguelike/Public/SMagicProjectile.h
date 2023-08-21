@@ -4,15 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "SBaseProjectile.h"
 #include "SMagicProjectile.generated.h"
 
-
-class USphereComponent;
-class UProjectileMovementComponent;
-class UParticleSystemComponent;
-
 UCLASS()
-class ACTIONROGUELIKE_API ASMagicProjectile : public AActor
+class ACTIONROGUELIKE_API ASMagicProjectile : public ASBaseProjectile
 {
 	GENERATED_BODY()
 	
@@ -22,24 +18,10 @@ public:
 
 protected:
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	USphereComponent* SphereComp;
+	UPROPERTY(EditDefaultsOnly, Category = "Damage")
+	float DamageAmount;
 
-	UPROPERTY(VisibleAnywhere)
-	UProjectileMovementComponent* MovementComp;
-
-	UPROPERTY(VisibleAnywhere)
-	UParticleSystemComponent* EffectComp;
-
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
 	UFUNCTION()
 	void OnActorOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
-
-
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
-
 
 };
