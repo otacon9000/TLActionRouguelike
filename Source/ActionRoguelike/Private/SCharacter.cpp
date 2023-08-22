@@ -83,6 +83,15 @@ void ASCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 
 }
 
+
+void ASCharacter::PostInitializeComponents()
+{
+	Super::PostInitializeComponents();
+
+	AttributeComp->OnHealthChanged.AddDynamic(this, &ASCharacter::OnHealthChanged);
+}
+
+
 void ASCharacter::MoveForward(float Value)
 {
 	FRotator ControlRot = GetControlRotation();
@@ -198,5 +207,15 @@ void ASCharacter::PrimaryInteract()
 	if (InteractionComp)
 	{
 		InteractionComp->PrimaryInteract();
+	}
+}
+
+void ASCharacter::OnHealthChanged(AActor* InstigatorActor, USAttributeComponent* OwningComp, float NewHealth, float Delta)
+{
+	if(NewHealth <=0 && Delta <=0)
+	{
+		APlayerController* PC = Cast<APlayerController>(GetController());
+		DisableInput(PC);
+
 	}
 }
