@@ -55,6 +55,12 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Attack")
 	float AttackAnimDelay;
 
+	UPROPERTY(VisibleAnywhere, Category = "Effects")
+	FName TimeToHitParamName;
+
+	UPROPERTY(VisibleAnywhere, Category = "Effects")
+	FName HandSocketName;
+
 
 	void MoveForward(float Value);
 	void MoveRight(float Value);

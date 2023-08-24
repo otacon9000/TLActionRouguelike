@@ -7,6 +7,8 @@
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "UObject/UObjectBaseUtility.h"
 #include "Kismet/GameplayStatics.h"
+#include "Components/AudioComponent.h"
+#include "Sound/SoundCue.h"
 
 // Sets default values
 ASBaseProjectile::ASBaseProjectile()
@@ -22,11 +24,16 @@ ASBaseProjectile::ASBaseProjectile()
 	EffectComp = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("EffectComp"));
 	EffectComp->SetupAttachment(RootComponent);
 
+	AudioComp = CreateDefaultSubobject<UAudioComponent>("AudioComp");
+	AudioComp->SetupAttachment(RootComponent);
+
+
 	MoveComp = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("ProjectileMoveComp"));
 	MoveComp->bRotationFollowsVelocity = true;
 	MoveComp->bInitialVelocityInLocalSpace = true;
 	MoveComp->ProjectileGravityScale = 0.0f;
 	MoveComp->InitialSpeed = 8000;
+
 
 }
 
@@ -41,11 +48,14 @@ void ASBaseProjectile::Explode_Implementation()
 	{
 		UGameplayStatics::SpawnEmitterAtLocation(this, ImpactVFX, GetActorLocation(), GetActorRotation());
 
-		EffectComp->DeactivateSystem();
+		UGameplayStatics::PlaySoundAtLocation(this, ImpactSound, GetActorLocation());
 
-		MoveComp->StopMovementImmediately();
 
-		SetActorEnableCollision(false);
+		//EffectComp->DeactivateSystem();
+
+		//MoveComp->StopMovementImmediately();
+
+		//SetActorEnableCollision(false);
 
 		Destroy();
 	}
