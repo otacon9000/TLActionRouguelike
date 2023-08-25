@@ -27,7 +27,7 @@ float USAttributeComponent::GetHealthMax() const
 }
 
 
-bool USAttributeComponent::ApplyHealthChange(float Delta)
+bool USAttributeComponent::ApplyHealthChange(AActor* InstigatorActor, float Delta)
 {
 	float OldHealth = Health;
 
@@ -35,7 +35,7 @@ bool USAttributeComponent::ApplyHealthChange(float Delta)
 
 	float ActualDelta = Health - OldHealth;
 
-	OnHealthChanged.Broadcast(nullptr, this, Health, ActualDelta); // Still nullptr for InstigatorActor parameter
+	OnHealthChanged.Broadcast(InstigatorActor, this, Health, ActualDelta);
 
 	return ActualDelta != 0;
 }
