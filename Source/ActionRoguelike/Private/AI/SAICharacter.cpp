@@ -6,10 +6,14 @@
 #include "AIModule/Classes/AIController.h"
 #include "AIModule/Classes/BehaviorTree/BlackboardComponent.h"
 #include "DrawDebugHelpers.h"
+#include "SAttributeComponent.h"
+#include "BrainComponent.h"
 
 // Sets default values
 ASAICharacter::ASAICharacter()
 {
+	AttributeComp = CreateDefaultSubobject<USAttributeComponent>(TEXT("AttributeComp"));
+
 	PawnSensingComp = CreateDefaultSubobject<UPawnSensingComponent>(TEXT("PawnSensingComp"));
 
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
@@ -28,10 +32,35 @@ void ASAICharacter::OnPawnSeen(APawn* Pawn)
 	}
 }
 
+void ASAICharacter::OnHealthChanged(AActor* InstigatorActor, USAttributeComponent* OwningComp, float NewHealth, float Delta)
+{
+	if (Delta < 0)
+	{
+
+		if(NewHealth <= 0.0f)
+		{
+			AAIController* AIC = Cast<AAIController>(GetController());
+			if(AIC)
+			{
+				AIC->GetBrainComponent()->StopLogic("Killed");
+
+			}
+
+			//ragdoll
+			GetMesh()->SetAllBodiesSimulatePhysics(true);
+			GetMesh()->SetCollisionProfileName("Ragdoll");
+
+			//lifespan
+			SetLifeSpan(10.0f);
+		}
+	}
+}
+
 void ASAICharacter::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
 
 	PawnSensingComp->OnSeePawn.AddDynamic(this, &ASAICharacter::OnPawnSeen);
+	AttributeComp->OnHealthChanged.AddDynamic(this, &ASAICharacter::OnHealthChanged);
 }
 
