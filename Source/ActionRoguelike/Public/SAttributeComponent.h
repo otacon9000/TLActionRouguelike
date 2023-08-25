@@ -17,6 +17,12 @@ public:
 	// Sets default values for this component's properties
 	USAttributeComponent();
 
+	UFUNCTION(BlueprintCallable, Category = "Attributes")
+	static USAttributeComponent* GetAttributes(AActor* FromActor);
+
+	UFUNCTION(BlueprintCallable, Category = "Attributes", meta = (DisplayName = "IsAlive"))
+	static bool IsActorLive(AActor* Actor); 
+
 protected:
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category ="Attributes")
 	float Health;
