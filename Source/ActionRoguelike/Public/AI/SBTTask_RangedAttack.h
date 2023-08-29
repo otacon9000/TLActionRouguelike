@@ -14,10 +14,6 @@ class ACTIONROGUELIKE_API USBTTask_RangedAttack : public UBTTaskNode
 {
 	GENERATED_BODY()
 
-		
-
-
-
 	virtual EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory);
 
 protected:
@@ -27,6 +23,7 @@ protected:
 	
 	UPROPERTY(EditAnywhere, Category = "AI")
 	float BulletSpread;
+
 public:
 	USBTTask_RangedAttack();
 };

@@ -15,7 +15,6 @@ class ACTIONROGUELIKE_API ASBasePowerup : public AActor, public ISGameplayInterf
 	GENERATED_BODY()
 
 public:
-	// Sets default values for this actor's properties
 	ASBasePowerup();
 
 protected:
@@ -32,8 +31,6 @@ protected:
 	void HidePowerup();
 
 	void SetPowerupState(bool bNewIsActive);
-
-
 
 
 public:
