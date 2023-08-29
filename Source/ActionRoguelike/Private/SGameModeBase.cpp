@@ -25,6 +25,22 @@ void ASGameModeBase::StartPlay()
 }
 
 
+void ASGameModeBase::KillAllEnemies()
+{
+	for (TActorIterator<ASAICharacter> It(GetWorld()); It; ++It)
+	{
+		ASAICharacter* Bot = *It;
+
+		USAttributeComponent* AttributeComp = USAttributeComponent::GetAttributes(Bot);
+		if (ensure(AttributeComp) && AttributeComp->IsAlive())
+		{
+			//here
+			AttributeComp->Kill(this);
+		}
+
+	}
+}
+
 void ASGameModeBase::SpawnBotTimerElapsed()
 {
 
