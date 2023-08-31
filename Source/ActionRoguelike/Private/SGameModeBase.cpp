@@ -12,6 +12,7 @@
 #include "DrawDebugHelpers.h"
 #include "SCharacter.h"
 
+static TAutoConsoleVariable<bool> CVarSpawnBots(TEXT("su.SpawnBots"), true, TEXT("Enable spawinig bots via timer"), ECVF_Cheat);
 
 ASGameModeBase::ASGameModeBase()
 {
@@ -46,7 +47,11 @@ void ASGameModeBase::KillAllEnemies()
 
 void ASGameModeBase::SpawnBotTimerElapsed()
 {
-
+	if(!CVarSpawnBots.GetValueOnGameThread())
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Bot spawn was disabled via cvar."));
+		return;
+	}
 
 	int32 NrOfAliveBots = 0;
 
