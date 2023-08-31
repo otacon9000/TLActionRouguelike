@@ -10,6 +10,7 @@
 #include "SAttributeComponent.h"
 #include "EngineUtils.h"
 #include "DrawDebugHelpers.h"
+#include "SCharacter.h"
 
 
 ASGameModeBase::ASGameModeBase()
@@ -23,6 +24,7 @@ void ASGameModeBase::StartPlay()
 
 	GetWorldTimerManager().SetTimer(TimerHandle_SpawnBots, this, &ASGameModeBase::SpawnBotTimerElapsed, SpawnTimerInterval, true);
 }
+
 
 
 void ASGameModeBase::KillAllEnemies()
@@ -40,6 +42,7 @@ void ASGameModeBase::KillAllEnemies()
 
 	}
 }
+
 
 void ASGameModeBase::SpawnBotTimerElapsed()
 {
@@ -90,6 +93,8 @@ void ASGameModeBase::SpawnBotTimerElapsed()
 
 void ASGameModeBase::OnQueryCompleted(UEnvQueryInstanceBlueprintWrapper* QueryInstance, EEnvQueryStatus::Type QueryStatus)
 {
+
+
 	if (QueryStatus != EEnvQueryStatus::Success)
 	{
 
@@ -110,3 +115,31 @@ void ASGameModeBase::OnQueryCompleted(UEnvQueryInstanceBlueprintWrapper* QueryIn
 	}
 }
 
+void ASGameModeBase::RespawnPlayerElapsed(AController* Controller)
+{
+	if (ensure(Controller))
+	{
+		Controller->UnPossess();
+
+		RestartPlayer(Controller);
+	}
+}
+
+
+
+void ASGameModeBase::OnActorKilled(AActor* VictimActor, AActor* Killer)
+{
+
+	ASCharacter* Player = Cast<ASCharacter>(VictimActor);
+	if (Player)
+	{
+
+		FTimerHandle TimerHandle_RespawnDelay;
+
+		FTimerDelegate Delegate;
+		Delegate.BindUFunction(this, "RespawnPlayerElapsed", Player->GetController());
+
+		GetWorldTimerManager().SetTimer(TimerHandle_RespawnDelay, Delegate, 2.0f, false);
+	}
+
+}

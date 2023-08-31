@@ -60,10 +60,6 @@ void ASCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 }
 
 
-void ASCharacter::HealSelf(float Amount /*= 100*/)
-{
-	AttributeComp->ApplyHealthChange(this, Amount);
-}
 
 void ASCharacter::PostInitializeComponents()
 {
@@ -204,4 +200,15 @@ void ASCharacter::OnHealthChanged(AActor* InstigatorActor, USAttributeComponent*
 		DisableInput(PC);
 
 	}
+}
+
+
+void ASCharacter::HealSelf(float Amount /*= 100*/)
+{
+	AttributeComp->ApplyHealthChange(this, Amount);
+}
+
+void ASCharacter::KillMe()
+{
+	AttributeComp->Kill(this);
 }

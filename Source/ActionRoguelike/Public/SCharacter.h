@@ -92,4 +92,7 @@ public:
 	UFUNCTION(Exec)
 	void HealSelf(float Amount = 100);
 
+	UFUNCTION(Exec)
+	void KillMe();
+
 };
