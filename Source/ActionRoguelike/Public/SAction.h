@@ -25,4 +25,6 @@ public:
 
 	UFUNCTION(BlueprintNativeEvent, Category = "Actions")
 	void StopAction(AActor* Instigator);
+
+	UWorld* GetWorld() const override;
 };
