@@ -2,15 +2,24 @@
 
 
 #include "SAction.h"
+#include "SActionComponent.h"
 
 void USAction::StartAction_Implementation(AActor* Instigator)
 {
 	UE_LOG(LogTemp, Log, TEXT("Start action: %s"), *GetNameSafe(this));
+
+	USActionComponent* Comp = GetOwningComponent();
+
+	Comp->ActiveGameplayTags.AppendTags(GrantTags);
 }
 
 void USAction::StopAction_Implementation(AActor* Instigator)
 {
 	UE_LOG(LogTemp, Log, TEXT("Stop action: %s"), *GetNameSafe(this));
+
+	USActionComponent* Comp = GetOwningComponent();
+
+	Comp->ActiveGameplayTags.RemoveTags(GrantTags);
 }
 
 UWorld* USAction::GetWorld() const
@@ -22,4 +31,9 @@ UWorld* USAction::GetWorld() const
 	}
 
 	return nullptr;
+}
+
+USActionComponent* USAction::GetOwningComponent() const
+{
+	return Cast<USActionComponent>(GetOuter());
 }

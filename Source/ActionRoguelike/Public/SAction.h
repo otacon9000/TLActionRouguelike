@@ -4,8 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "UObject/NoExportTypes.h"
+#include "GameplayTagContainer.h"
 #include "SAction.generated.h"
 
+class UWorld;
+class USActionComponent;
 /**
  * 
  */
@@ -27,4 +30,16 @@ public:
 	void StopAction(AActor* Instigator);
 
 	UWorld* GetWorld() const override;
+
+protected:
+
+	UPROPERTY(EditDefaultsOnly, Category = "Tags")
+	FGameplayTagContainer GrantTags;
+
+
+	UPROPERTY(EditDefaultsOnly, Category = "Tags")
+	FGameplayTagContainer BlockedTags;
+
+	UFUNCTION(BlueprintCallable, Category = "Actions")
+	USActionComponent* GetOwningComponent() const;
 };
