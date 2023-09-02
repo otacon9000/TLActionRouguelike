@@ -31,15 +31,27 @@ public:
 
 	UWorld* GetWorld() const override;
 
+	UFUNCTION(BlueprintCallable, Category = "Actions")
+	bool IsRunning() const;
+
+	UFUNCTION(BlueprintNativeEvent, Category = "Actions")
+	bool CanStart(AActor* Instigator);
+
+
 protected:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Tags")
 	FGameplayTagContainer GrantTags;
 
-
 	UPROPERTY(EditDefaultsOnly, Category = "Tags")
 	FGameplayTagContainer BlockedTags;
 
+	bool bIsRunning;
+
+	
+
 	UFUNCTION(BlueprintCallable, Category = "Actions")
 	USActionComponent* GetOwningComponent() const;
+
+
 };
