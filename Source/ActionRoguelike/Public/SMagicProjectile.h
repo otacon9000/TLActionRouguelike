@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "SBaseProjectile.h"
+#include "GameplayTagContainer.h"
 #include "SMagicProjectile.generated.h"
 
 UCLASS()
@@ -17,6 +18,9 @@ public:
 	ASMagicProjectile();
 
 protected:
+
+	UPROPERTY(EditDefaultsOnly, Category = "Damage")
+	FGameplayTag ParryTag;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Damage")
 	float DamageAmount;
