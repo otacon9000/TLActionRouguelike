@@ -26,7 +26,7 @@ public:
 	UFUNCTION(BlueprintNativeEvent, Category = "Actions")
 	void StartAction(AActor* Instigator);
 
-	UFUNCTION(BlueprintNativeEvent, Category = "Actions")
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Actions")
 	void StopAction(AActor* Instigator);
 
 	UWorld* GetWorld() const override;
