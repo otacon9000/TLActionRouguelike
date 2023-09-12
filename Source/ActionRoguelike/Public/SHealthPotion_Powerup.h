@@ -21,6 +21,9 @@ protected:
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 	UStaticMeshComponent* MeshComp;
 
+	UPROPERTY(EditAnywhere, Category = "HealthPotion")
+	int32 CreditCost;
+
 
 public:
 	void Interact_Implementation(APawn* InstigatorPawn) override;
