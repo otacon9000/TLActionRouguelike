@@ -230,6 +230,7 @@ void ASGameModeBase::OnActorKilled(AActor* VictimActor, AActor* Killer)
 		ASPlayerState* PS = KillerPawn->GetPlayerState<ASPlayerState>();
 		if (PS)
 		{
+			UE_LOG(LogTemp, Log, TEXT("ADD CREDITS SUCCESFUL"));
 			PS->AddCredits(CreditsPerKill);
 		}
 	}
