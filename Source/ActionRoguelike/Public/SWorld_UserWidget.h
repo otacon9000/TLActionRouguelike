@@ -17,8 +17,9 @@ class ACTIONROGUELIKE_API USWorld_UserWidget : public UUserWidget
 	GENERATED_BODY()
 	
 protected:
+
 	UPROPERTY(meta = (BindWidget))
-	USizeBox* ParentSizeBox;
+	TObjectPtr<USizeBox> ParentSizeBox;
 
 	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime);
 
@@ -26,8 +27,8 @@ protected:
 public:
 
 	UPROPERTY(EditAnywhere, Category = "UI")
-	FVector HealthbarOffest;
+	FVector WorldOffset;
 
-	UPROPERTY(BlueprintReadOnly, Category = "UI")
-	AActor* AttachedActor;
+	UPROPERTY(BlueprintReadWrite, Category = "UI", meta = (ExposeOnSpawn = true))
+	TObjectPtr<AActor> AttachedActor;
 };
