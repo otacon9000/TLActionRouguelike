@@ -4,9 +4,26 @@
 #include "SAction.h"
 #include "SActionComponent.h"
 
+
+bool USAction::CanStart_Implementation(AActor* Instigator)
+{
+	if (IsRunning())
+	{
+		return false;
+	}
+
+	USActionComponent* Comp = GetOwningComponent();
+
+	if (Comp->ActiveGameplayTags.HasAny(BlockedTags))
+	{
+		return false;
+	}
+
+	return true;
+}
+
 void USAction::StartAction_Implementation(AActor* Instigator)
 {
-
 	UE_LOG(LogTemp, Log, TEXT("Start action: %s"), *GetNameSafe(this));
 
 	USActionComponent* Comp = GetOwningComponent();
@@ -50,21 +67,3 @@ bool USAction::IsRunning() const
 	return bIsRunning;
 }
 
-bool USAction::CanStart_Implementation(AActor* Instigator)
-{
-
-	if (IsRunning())
-	{
-		return false;
-	}
-
-	USActionComponent* Comp = GetOwningComponent();
-
-	if(Comp->ActiveGameplayTags.HasAny(BlockedTags))
-	{
-		return false;
-	}
-	
-	return true;
-}
- 

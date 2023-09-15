@@ -17,11 +17,16 @@ class ACTIONROGUELIKE_API USAction : public UObject
 {
 	GENERATED_BODY()
 	
-
 public:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Actions")
+	bool bAutoStart;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Actions")
 	FName ActionName; 
+
+	UFUNCTION(BlueprintNativeEvent, Category = "Actions")
+	bool CanStart(AActor* Instigator);
 
 	UFUNCTION(BlueprintNativeEvent, Category = "Actions")
 	void StartAction(AActor* Instigator);
@@ -29,16 +34,14 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Actions")
 	void StopAction(AActor* Instigator);
 
-	UWorld* GetWorld() const override;
-
 	UFUNCTION(BlueprintCallable, Category = "Actions")
 	bool IsRunning() const;
 
-	UFUNCTION(BlueprintNativeEvent, Category = "Actions")
-	bool CanStart(AActor* Instigator);
-
+	UWorld* GetWorld() const override;
 
 protected:
+
+	bool bIsRunning;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Tags")
 	FGameplayTagContainer GrantTags;
@@ -46,12 +49,7 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Tags")
 	FGameplayTagContainer BlockedTags;
 
-	bool bIsRunning;
-
-	
-
 	UFUNCTION(BlueprintCallable, Category = "Actions")
 	USActionComponent* GetOwningComponent() const;
-
 
 };
