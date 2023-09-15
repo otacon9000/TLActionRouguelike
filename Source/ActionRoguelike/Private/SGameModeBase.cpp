@@ -67,7 +67,7 @@ void ASGameModeBase::SpawnBotTimerElapsed()
 {
 	if(!CVarSpawnBots.GetValueOnGameThread())
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Bot spawn was disabled via cvar."));
+		//UE_LOG(LogTemp, Warning, TEXT("Bot spawn was disabled via cvar."));
 		return;
 	}
 
@@ -83,13 +83,9 @@ void ASGameModeBase::SpawnBotTimerElapsed()
 			NrOfAliveBots++;
 		}
 
-		//if(USAttributeComponent::IsActorLive(Bot))
-		//{
-		//	NrOfAliveBots++;
-		//}
 	}
 
-	UE_LOG(LogTemp, Log, TEXT("FOUND %i alive bots"), NrOfAliveBots);
+	//UE_LOG(LogTemp, Log, TEXT("FOUND %i alive bots"), NrOfAliveBots);
 
 	float MaxBotCount = 10.0f;
 	if (DifficultyCurve)
@@ -107,14 +103,14 @@ void ASGameModeBase::SpawnBotTimerElapsed()
 
 	if (ensure(QueryInstance))
 	{
-		QueryInstance->GetOnQueryFinishedEvent().AddDynamic(this, &ASGameModeBase::OnBotQueryCompleted);
+		QueryInstance->GetOnQueryFinishedEvent().AddDynamic(this, &ASGameModeBase::OnBotSpawnQueryCompleted);
 	}
 
 }
 
 
 
-void ASGameModeBase::OnBotQueryCompleted(UEnvQueryInstanceBlueprintWrapper* QueryInstance, EEnvQueryStatus::Type QueryStatus)
+void ASGameModeBase::OnBotSpawnQueryCompleted(UEnvQueryInstanceBlueprintWrapper* QueryInstance, EEnvQueryStatus::Type QueryStatus)
 {
 
 	if (QueryStatus != EEnvQueryStatus::Success)
@@ -210,6 +206,7 @@ void ASGameModeBase::RespawnPlayerElapsed(AController* Controller)
 
 void ASGameModeBase::OnActorKilled(AActor* VictimActor, AActor* Killer)
 {
+	UE_LOG(LogTemp, Log, TEXT("OnActorKilled: Victim: %s, Killer: %s"), *GetNameSafe(VictimActor), *GetNameSafe(Killer));
 
 	ASCharacter* Player = Cast<ASCharacter>(VictimActor);
 	if (Player)
@@ -220,7 +217,8 @@ void ASGameModeBase::OnActorKilled(AActor* VictimActor, AActor* Killer)
 		FTimerDelegate Delegate;
 		Delegate.BindUFunction(this, "RespawnPlayerElapsed", Player->GetController());
 
-		GetWorldTimerManager().SetTimer(TimerHandle_RespawnDelay, Delegate, 2.0f, false);
+		float RespawnDelay = 2.0f;
+		GetWorldTimerManager().SetTimer(TimerHandle_RespawnDelay, Delegate, RespawnDelay, false);
 	}
 
 	// Give Credits for kill
@@ -230,7 +228,7 @@ void ASGameModeBase::OnActorKilled(AActor* VictimActor, AActor* Killer)
 		ASPlayerState* PS = KillerPawn->GetPlayerState<ASPlayerState>();
 		if (PS)
 		{
-			UE_LOG(LogTemp, Log, TEXT("ADD CREDITS SUCCESFUL"));
+			//UE_LOG(LogTemp, Log, TEXT("ADD CREDITS SUCCESFUL"));
 			PS->AddCredits(CreditsPerKill);
 		}
 	}
