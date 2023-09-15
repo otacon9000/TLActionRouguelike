@@ -3,6 +3,8 @@
 
 #include "SInteractionComponent.h"
 #include "SGameplayInterface.h"
+#include "SWorld_UserWidget.h"
+#include "DrawDebugHelpers.h"
 
 static TAutoConsoleVariable<bool> CVarDebugDrawInteraction(TEXT("su.InteractionDrawDebug"), false, TEXT("Enable debug lines for Interact Component"));
 
@@ -13,7 +15,7 @@ USInteractionComponent::USInteractionComponent()
 	PrimaryComponentTick.bCanEverTick = true;
 
 	// Since we use Camera info in Tick we want the most up to date camera position for tracing
-	PrimaryComponentTick.TickGroup = TG_PostUpdateWork;
+	//PrimaryComponentTick.TickGroup = TG_PostUpdateWork;
 
 	TraceRadius = 30.0f;
 	TraceDistance = 500.0f;

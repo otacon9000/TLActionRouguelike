@@ -9,19 +9,17 @@
 #include "SInteractionComponent.h"
 #include "SAttributeComponent.h"
 #include "SActionComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 
 // Sets default values
 ASCharacter::ASCharacter()
 {
- 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
 	SpringArmComp = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArmComp"));
 	SpringArmComp->bUsePawnControlRotation = true;
 	SpringArmComp->SetupAttachment(RootComponent);
-
-	//SpringArmComp->SetUsingAbsoluteRotation(true);
 
 	CameraComp = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComp"));
 	CameraComp->SetupAttachment(SpringArmComp);
@@ -132,11 +130,16 @@ void ASCharacter::PrimaryInteract()
 
 void ASCharacter::OnHealthChanged(AActor* InstigatorActor, USAttributeComponent* OwningComp, float NewHealth, float Delta)
 {
+	//Damage
 	if (Delta < 0.0f)
 	{
 		GetMesh()->SetScalarParameterValueOnMaterials(TimeToHitParamName, GetWorld()->TimeSeconds);
+		// Rage added equal to damage received (Abs to turn into positive rage number)
+		float RageDelta = FMath::Abs(Delta);
+		AttributeComp->ApplyRage(InstigatorActor, RageDelta);
 	}
 
+	//Die
 	if(NewHealth <=0 && Delta <=0)
 	{
 		APlayerController* PC = Cast<APlayerController>(GetController());
@@ -158,10 +161,10 @@ void ASCharacter::KillMe()
 
 void ASCharacter::SprintStart()
 {
-	ActionComp->StartActionByName(this, "Sprint"); //name hard coded? 
+	ActionComp->StartActionByName(this, "Sprint");
 }
 
 void ASCharacter::SprintStop()
 {
-	ActionComp->StopActionByName(this, "Sprint"); //name hard coded? 
+	ActionComp->StopActionByName(this, "Sprint"); 
 }

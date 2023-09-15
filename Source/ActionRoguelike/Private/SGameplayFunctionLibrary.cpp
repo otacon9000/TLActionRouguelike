@@ -2,7 +2,7 @@
 
 
 #include "SGameplayFunctionLibrary.h"
-#include "../Public/SAttributeComponent.h"
+#include "SAttributeComponent.h"
 
 bool USGameplayFunctionLibrary::ApplyDamage(AActor* DamageCauser, AActor* TargetActor, float DamageAmount)
 {
