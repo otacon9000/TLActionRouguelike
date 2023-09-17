@@ -35,13 +35,24 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	USAttributeComponent* AttributeComp;
 
-	UPROPERTY(VisibleAnywhere, Category = "Effects")
-	FName TimeToHitParamName;
-
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	USActionComponent* ActionComp;
 
+	UPROPERTY(VisibleAnywhere, Category = "Effects")
+	FName TimeToHitParamName;
+
+	/* Key for AI Blackboard 'TargetActor' */
+	UPROPERTY(VisibleAnywhere, Category = "Effects")
+	FName TargetActorKey;
+
+	/* Widget to display when bot first sees a player. */
+	UPROPERTY(EditDefaultsOnly, Category = "UI")
+	TSubclassOf<UUserWidget> SpottedWidgetClass;
+
 	void SetTargetActor(AActor* NewTarget);
+
+	UFUNCTION(BlueprintCallable, Category = "AI")
+	AActor* GetTargetActor() const;
 
 	UFUNCTION()
 	void OnPawnSeen(APawn* Pawn);

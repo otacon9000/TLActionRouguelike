@@ -3,13 +3,12 @@
 
 #include "AI/SAICharacter.h"
 #include "AIModule/Classes/Perception/PawnSensingComponent.h"
-#include "AIModule/Classes/AIController.h"
-#include "AIModule/Classes/BehaviorTree/BlackboardComponent.h"
+#include "AIController.h"
+#include "BehaviorTree/BlackboardComponent.h"
 #include "DrawDebugHelpers.h"
 #include "SAttributeComponent.h"
 #include "BrainComponent.h"
 #include "SWorld_UserWidget.h"
-#include "GameFramework/Character.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "SActionComponent.h"
@@ -29,6 +28,7 @@ ASAICharacter::ASAICharacter()
 	GetMesh()->SetGenerateOverlapEvents(true);
 
 	TimeToHitParamName = "TimeToHit";
+	TargetActorKey = "TargetActor";
 }
 
 
@@ -95,12 +95,35 @@ void ASAICharacter::SetTargetActor(AActor* NewTarget)
 	{
 		AIC->GetBlackboardComponent()->SetValueAsObject("TargetActor", NewTarget);
 	}
+
+}
+
+AActor* ASAICharacter::GetTargetActor() const
+{
+	AAIController* AIC = Cast<AAIController>(GetController());
+	if (AIC)
+	{
+		return Cast<AActor>(AIC->GetBlackboardComponent()->GetValueAsObject(TargetActorKey));
+	}
+
+	return nullptr;
 }
 
 void ASAICharacter::OnPawnSeen(APawn* Pawn)
 {
-	SetTargetActor(Pawn);
+	// Ignore if target already set
+	if (GetTargetActor() != Pawn)
+	{
+		SetTargetActor(Pawn);
 
-	DrawDebugString(GetWorld(), GetActorLocation(), "PLAYER SPOTTED", nullptr, FColor::White, 4.0f, true);
-	
+		USWorld_UserWidget* NewWidget = CreateWidget<USWorld_UserWidget>(GetWorld(), SpottedWidgetClass);
+		if (NewWidget)
+		{
+			NewWidget->AttachedActor = this;
+			// Index of 10 (or anything higher than default of 0) places this on top of any other widget.
+			// May end up behind the minion health bar otherwise.
+			NewWidget->AddToViewport(10);
+		}
+	}
+	//DrawDebugString(GetWorld(), GetActorLocation(), "PLAYER SPOTTED", nullptr, FColor::White, 0.5f, true);
 }
