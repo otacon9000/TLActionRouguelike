@@ -2,7 +2,6 @@
 
 
 #include "SWorld_UserWidget.h"
-#include "ActionRoguelike.h"
 #include "Kismet/GameplayStatics.h"
 #include "Blueprint/WidgetLayoutLibrary.h"
 #include "Components/SizeBox.h"
@@ -18,14 +17,14 @@ void USWorld_UserWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTi
 	{
 		RemoveFromParent();
 
-		UE_LOGFMT(LogGame, Warning, "AttachedActor no longer valid, removing Health Widget.");
+		UE_LOG(LogTemp, Warning, TEXT("AttachedActor no longer valid, removing Health Widget."));
+		
 		return;
 	}
 
 	FVector2D ScreenPosition;
-	bool bIsOnScreen = UGameplayStatics::ProjectWorldToScreen(GetOwningPlayer(), AttachedActor->GetActorLocation() + WorldOffset, ScreenPosition);
 
-	if (bIsOnScreen)
+	if (UGameplayStatics::ProjectWorldToScreen(GetOwningPlayer(), AttachedActor->GetActorLocation() + WorldOffset, ScreenPosition))
 	{
 		float Scale = UWidgetLayoutLibrary::GetViewportScale(this);
 
@@ -37,8 +36,8 @@ void USWorld_UserWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTi
 		}
 	}
 
-	if (ParentSizeBox)
-	{
-		ParentSizeBox->SetVisibility(bIsOnScreen ? ESlateVisibility::HitTestInvisible : ESlateVisibility::Collapsed);
-	}
+	//if (ParentSizeBox)
+	//{
+	//	ParentSizeBox->SetVisibility(bIsOnScreen ? ESlateVisibility::HitTestInvisible : ESlateVisibility::Collapsed);
+	//}
 }

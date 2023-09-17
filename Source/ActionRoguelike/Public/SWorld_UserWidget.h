@@ -19,7 +19,7 @@ class ACTIONROGUELIKE_API USWorld_UserWidget : public UUserWidget
 protected:
 
 	UPROPERTY(meta = (BindWidget))
-	TObjectPtr<USizeBox> ParentSizeBox;
+	USizeBox* ParentSizeBox;
 
 	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime);
 
