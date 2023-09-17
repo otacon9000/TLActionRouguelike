@@ -86,8 +86,7 @@ bool USAttributeComponent::ApplyHealthChange(AActor* InstigatorActor, float Delt
 	Health = FMath::Clamp(Health + Delta, 0.0f, HealthMax);
 
 	float ActualDelta = Health - OldHealth;
-	//OnHealthChanged.Broadcast(InstigatorActor, this, Health, ActualDelta);
-
+	
 	if (ActualDelta != 0.0f)
 	{
 		MulticastHealthChanged(InstigatorActor, Health, ActualDelta);

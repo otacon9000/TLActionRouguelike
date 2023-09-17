@@ -76,4 +76,5 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Attributes")
 	bool ApplyRage(AActor* InstigatorActor, float Delta);
 	
+	void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const; //qualcosa non quadra
 };
