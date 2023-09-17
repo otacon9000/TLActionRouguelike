@@ -18,9 +18,6 @@ public:
 
 protected:
 
-	UPROPERTY(VisibleAnywhere, Category = "Components")
-	UStaticMeshComponent* MeshComp;
-
 	UPROPERTY(EditAnywhere, Category = "HealthPotion")
 	int32 CreditCost;
 

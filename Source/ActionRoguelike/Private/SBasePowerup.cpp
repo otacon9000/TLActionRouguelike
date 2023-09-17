@@ -3,6 +3,7 @@
 
 #include "SBasePowerup.h"
 #include "Components/SphereComponent.h"
+#include "Components/StaticMeshComponent.h"
 
 
 ASBasePowerup::ASBasePowerup()
@@ -11,7 +12,14 @@ ASBasePowerup::ASBasePowerup()
 	SphereComp->SetCollisionProfileName("Powerup"); // add profile colliosin in project settings 
 	RootComponent = SphereComp;
 
+	MeshComp = CreateDefaultSubobject<UStaticMeshComponent>("MeshComp");
+	// Disable collision, instead we use SphereComp to handle interaction queries
+	MeshComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	MeshComp->SetupAttachment(RootComponent);
+
 	RespawnTime = 10.0f;
+
+	SetReplicates(true);
 }
 
 void ASBasePowerup::ShowPowerup()
@@ -23,8 +31,7 @@ void ASBasePowerup::HidePowerup()
 {
 	SetPowerupState(false);
 
-	FTimerHandle TimerHandle_Respawn;
-	GetWorldTimerManager().SetTimer(TimerHandle_Respawn, this, &ASBasePowerup::ShowPowerup, RespawnTime);
+	GetWorldTimerManager().SetTimer(TimerHandle_RespawnTimer, this, &ASBasePowerup::ShowPowerup, RespawnTime);
 }
 
 void ASBasePowerup::SetPowerupState(bool bNewIsActive)
@@ -39,6 +46,6 @@ void ASBasePowerup::SetPowerupState(bool bNewIsActive)
 
 void ASBasePowerup::Interact_Implementation(APawn* InstigatorPawn)
 {
-	
+	// logic in derived class
 }
 

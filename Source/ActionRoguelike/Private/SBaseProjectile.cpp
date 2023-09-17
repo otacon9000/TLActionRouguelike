@@ -34,7 +34,7 @@ ASBaseProjectile::ASBaseProjectile()
 	MoveComp->ProjectileGravityScale = 0.0f;
 	MoveComp->InitialSpeed = 8000;
 
-
+	SetReplicates(true);
 }
 
 void ASBaseProjectile::OnActorHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
@@ -50,12 +50,7 @@ void ASBaseProjectile::Explode_Implementation()
 
 		UGameplayStatics::PlaySoundAtLocation(this, ImpactSound, GetActorLocation());
 
-
-		//EffectComp->DeactivateSystem();
-
-		//MoveComp->StopMovementImmediately();
-
-		//SetActorEnableCollision(false);
+		//camera shake here
 
 		Destroy();
 	}

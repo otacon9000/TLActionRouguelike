@@ -8,6 +8,7 @@
 #include "SBasePowerup.generated.h"
 
 class USphereComponent;
+class UStaticMehComponent;
 
 UCLASS()
 class ACTIONROGUELIKE_API ASBasePowerup : public AActor, public ISGameplayInterface
@@ -22,8 +23,13 @@ protected:
 	UPROPERTY(EditAnywhere)
 	float RespawnTime;
 
+	FTimerHandle TimerHandle_RespawnTimer;
+
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 	USphereComponent* SphereComp;
+	
+	UPROPERTY(VisibleAnywhere, Category = "Components")
+	UStaticMeshComponent* MeshComp;
 
 	UFUNCTION()
 	void ShowPowerup();

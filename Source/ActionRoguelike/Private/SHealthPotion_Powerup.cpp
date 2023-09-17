@@ -3,18 +3,12 @@
 
 #include "SHealthPotion_Powerup.h"
 #include "SAttributeComponent.h"
-#include "Components/StaticMeshComponent.h"
 #include "SPlayerState.h"
 
 // Sets default values
 ASHealthPotion_Powerup::ASHealthPotion_Powerup()
 {
-	MeshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MeshComp"));
-	MeshComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-	MeshComp->SetupAttachment(RootComponent);
-
 	CreditCost = 50;
-
 }
 
 
